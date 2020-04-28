@@ -127,7 +127,7 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-  return str.replace(value,'');
+  return str.replace(value, '');
 }
 
 /**
@@ -142,7 +142,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-  return str.slice(1,-1);
+  return str.slice(1, -1);
 }
 
 
@@ -202,34 +202,9 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(width, height) {
-
-  return let string = '';
-  for(let h = 1; h<=height; h++){
-      for(let w = 1; w<=width; w++){
-          if (w == 1 || w == width){
-              if(h==1 && w == 1){
-                 string += '┍';
-              }else if (h==1 && w == width){
-                 string += '┑';
-              }else if (h==height && w == 1){
-                 string += '┗';
-              }else if (h==height && w == width){
-                 string += '┘';
-              }else {
-                  string += '┃';
-              }
-          }else if(h === 1 || h === height){
-             string+="─";
-         }else{
-             string+=" ";
-         }    
-      } string += '\n';
-
-  }
-return string;
+function getRectangleString(/* width, height */) {
+  throw new Error('Not implemented');
 }
-
 
 
 /**
@@ -248,15 +223,14 @@ return string;
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
+function encodeToRot13(str) {
   const input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        const output = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+  const output = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
 
-        const index = x => input.indexOf(x);
-        const translate = x=> index(x)>-1 ? output[index(x)]:x;
-        return str.split('').map(translate).join('');
-
-     }
+  const index = (x) => input.indexOf(x);
+  const translate = (x) => (index(x) > -1 ? output[index(x)] : x);
+  return str.split('').map(translate).join('');
+}
 
 
 /**
@@ -272,10 +246,9 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
 }
-
 
 /**
  * Returns playid card id.
@@ -301,8 +274,8 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  return '\'A♣\',\'2♣\',\'3♣\',\'4♣\',\'5♣\',\'6♣\',\'7♣\',\'8♣\',\'9♣\',\'10♣\',\'J♣\',\'Q♣\',\'K♣\',\'A♦\',\'2♦\',\'3♦\',\'4♦\',\'5♦\',\'6♦\',\'7♦\',\'8♦\',\'9♦\',\'10♦\',\'J♦\',\'Q♦\',\'K♦\',\'A♥\',\'2♥\',\'3♥\',\'4♥\',\'5♥\',\'6♥\',\'7♥\',\'8♥\',\'9♥\',\'10♥\',\'J♥\',\'Q♥\',\'K♥\',\'A♠\',\'2♠\',\'3♠\',\'4♠\',\'5♠\',\'6♠\',\'7♠\',\'8♠\',\'9♠\',\'10♠\',\'J♠\',\'Q♠\',\'K♠\''.split(',').indexOf(`'${value}'`);
 }
 
 
