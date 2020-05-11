@@ -167,7 +167,7 @@ function insertItem(arr, item, index) {
  *    [ 'a', 'b', 'c', 'd'], 3  => [ 'a', 'b', 'c' ]
  */
 function getHead(arr, n) {
-  return arr.slice(n);
+  return arr.slice(0, n);
 }
 
 
@@ -207,17 +207,8 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  let text = '';
-  for (let x = 0; x < arr.length; x += 1) {
-    for (let y = 0; y < arr[x].length; y += 1) {
-      text += arr[x][y];
-    }
-    text += '\n';
-  }
-  return text;
+  return arr.reduce((c, ele) => c.concat(ele.join(',')).concat('\n'), '').slice(0, -1);
 }
-
-
 /**
  * Transforms the numeric array into the according array of squares:
  *   f(x) = x * x
@@ -269,14 +260,9 @@ function getMovingSum(arr) {
  * [ 'a', 'b', 'c' , null ]  => [ "b", null ]
  * [ "a" ] => []
  */
-/* function getSecondItems(arr) {
-  return arr.filter((value, index) => {
-    if (index % 2 === 1) {
-      return arr.indexOf(value);
-    }
-  });
-
-} */
+function getSecondItems(arr) {
+  return arr.filter((el, i) => i % 2 !== 0);
+}
 
 
 /**
@@ -318,8 +304,7 @@ function propagateItemsByPositionIndex(arr) {
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
 function get3TopItems(arr) {
-  arr.sort((a, b) => a - b);
-  return arr.slice(-3);
+  return arr.sort((a, b) => b - a).slice(0, 3);
 }
 
 
@@ -337,7 +322,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-  return arr.filter((element) => typeof element === 'number' && element > 0);
+  return arr.filter((el) => typeof el === 'number' && el > 0).length;
 }
 
 /**
@@ -373,7 +358,7 @@ function sortDigitNamesByNumericOrder(arr) {
  *   [ 1, 10, 100, 1000 ]  => 1111
  */
 function getItemsSum(arr) {
-  return arr.reduce((prev, next) => prev + next);
+  return arr.reduce((acc, el) => acc + el, 0);
 }
 
 /**
@@ -453,18 +438,10 @@ function toStringList(arr) {
  *    ]
  */
 function sortCitiesArray(arr) {
-  return arr.sort((value1, value2) => {
-    if (value1.country === value2.country) {
-      return value1.city > value2.city;
-    }
+  return arr.sort((a, b) => {
+    if (a.country === b.country) return a.city < b.city ? -1 : 1;
 
-
-    if (value1.country > value2.country) {
-      return 1;
-    }
-
-
-    return -1;
+    return a.country < b.country ? -1 : 1;
   });
 }
 
@@ -486,8 +463,14 @@ function sortCitiesArray(arr) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return new Array(n).fill(0).map((el, i) => {
+    const rowArray = new Array(n).fill(0);
+
+    rowArray[i] = 1;
+
+    return rowArray;
+  });
 }
 
 /**
@@ -503,8 +486,8 @@ function getIdentityMatrix(/* n */) {
  *     0, 100 => [ 0, 1, 2, ..., 100 ]
  *     3, 3   => [ 3 ]
  */
-function getIntervalArray(/* start, end */) {
-  throw new Error('Not implemented');
+function getIntervalArray(start, end) {
+  return new Array(Math.abs(end - start) + 1).fill('').map((x, i) => start + i);
 }
 
 /**
@@ -518,8 +501,8 @@ function getIntervalArray(/* start, end */) {
  *   [ 'a', 'a', 'a', 'a' ]  => [ 'a' ]
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  return [...new Set(arr)];
 }
 
 /**
@@ -552,8 +535,22 @@ function distinct(/* arr */) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  return array.reduce((map, item) => {
+    const key = keySelector(item);
+
+    const value = valueSelector(item);
+
+    const collection = map.get(key);
+
+    if (!collection) {
+      map.set(key, [value]);
+    } else {
+      collection.push(value);
+    }
+
+    return map;
+  }, new Map());
 }
 
 
@@ -570,8 +567,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.reduce((acc, element) => acc.concat(childrenSelector(element)), []);
 }
 
 
@@ -587,8 +584,8 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((acc, element) => acc[element], arr);
 }
 
 
@@ -610,8 +607,14 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const len = arr.length;
+
+  const half = arr.splice(0, Number.parseInt(len / 2, 10));
+
+  if (len % 2) arr.push(arr.shift());
+
+  return arr.concat(half);
 }
 
 
@@ -637,6 +640,7 @@ module.exports = {
   sortDigitNamesByNumericOrder,
   getItemsSum,
   getFalsyValuesCount,
+  getSecondItems,
   findAllOccurences,
   sortCitiesArray,
   getIdentityMatrix,
