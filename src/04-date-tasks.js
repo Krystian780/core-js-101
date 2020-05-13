@@ -104,13 +104,18 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-/* function angleBetweenClockHands(date) {
+function angleBetweenClockHands(date) {
+  let angleDeg = ((60 * date.getUTCHours() - 11 * date.getUTCMinutes()) / 2) % 360;
 
-*/
+  angleDeg = angleDeg > 180 ? Math.abs(360 - angleDeg) : angleDeg;
+
+  return (((angleDeg) / 180) * Math.PI);
+}
 
 module.exports = {
   parseDataFromRfc2822,
   parseDataFromIso8601,
   isLeapYear,
   timeSpanToString,
+  angleBetweenClockHands,
 };
