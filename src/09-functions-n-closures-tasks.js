@@ -74,7 +74,7 @@ function getPowerFunction(exponent) {
 function getPolynom(...args) {
   const arr = [...args].reverse();
 
-  const polynom = (el) => arr.reduce((acc, curr, idx) => acc + curr * el ** idx, 0);
+  const polynom = (element) => arr.reduce((acc, curr, idx) => acc + curr * element ** idx, 0);
 
   return polynom;
 }
