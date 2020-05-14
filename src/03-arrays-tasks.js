@@ -36,14 +36,7 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  const array = [];
-  let counter = 0;
-  let number = -1;
-  while (counter < len) {
-    array.push(number += 2);
-    counter += 1;
-  }
-  return array;
+  return new Array(len).fill('').map((el, i) => 2 * i + 1);
 }
 
 
@@ -240,13 +233,13 @@ function toArrayOfSquares(arr) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
 function getMovingSum(arr) {
-  const newArray = [];
   let sum = 0;
-  for (let x = 0; x < arr.length; x += 1) {
-    sum += arr[x];
-    newArray.push(sum);
-  }
-  return newArray;
+
+  return arr.map((el) => {
+    sum += el;
+
+    return sum;
+  });
 }
 
 /**
@@ -280,13 +273,7 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-  const newArray = [];
-  for (let x = 0; x < arr.length; x += 1) {
-    for (let y = 0; y <= arr.indexOf(arr[x]); y += 1) {
-      newArray.push(arr[x]);
-    }
-  }
-  return newArray;
+  return arr.reduce((a, el, i) => a.concat(new Array(i + 1).fill(el)), []);
 }
 
 
